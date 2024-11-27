@@ -10,7 +10,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
 
-export default async function Bag() {
+export const getServerSideProps = async (context: any) => {
   noStore();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -23,10 +23,19 @@ export default async function Bag() {
 
   let totalPrice = 0;
 
-  cart?.items.forEach((item) => {
+  cart?.items.forEach((item: any) => {
     totalPrice += item.price * item.quantity;
   });
 
+  return {
+    props: {
+      cart,
+      totalPrice,
+    },
+  };
+};
+
+export default function Bag({ cart, totalPrice }: { cart: Cart | null, totalPrice: number }) {
   return (
     <div className="max-w-2xl mx-auto mt-10 min-h-[55vh]">
       {!cart || !cart.items ? (
@@ -35,7 +44,7 @@ export default async function Bag() {
             <ShoppingBag className="w-10 h-10 text-primary" />
           </div>
           <h2 className="text-xl font-semibold mt-6 mb-6">
-            You dont have any in here currently
+            You don't have any items in your cart currently
           </h2>
           <Button asChild>
             <Link href="/">Shop Now!</Link>
@@ -43,7 +52,7 @@ export default async function Bag() {
         </div>
       ) : (
         <div className="flex flex-col gap-y-10">
-          {cart?.items.map((item) => (
+          {cart?.items.map((item: any) => (
             <div key={item.id} className="flex">
               <div className="w-24 h-24 sm:w-32 sm:h-32 relative">
                 <Image
