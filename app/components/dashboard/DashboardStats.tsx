@@ -1,6 +1,7 @@
 import prisma from "@/app/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, PartyPopper, ShoppingBag, Users2 } from "lucide-react";
+import { unstable_noStore as noStore } from "next/cache"
 
 async function getData() {
   const [user, products, order] = await Promise.all([
@@ -25,6 +26,7 @@ async function getData() {
 }
 
 export async function DashboardStats() {
+  noStore();
   const { user, products, order } = await getData();
 
   const totalAmount = order.reduce((accumulator, currentValue) => {
