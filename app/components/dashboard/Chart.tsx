@@ -18,8 +18,17 @@ interface iAppProps {
   }[];
 }
 
-const aggregateData = (data: any) => {
-  const aggregated = data.reduce((acc: any, curr: any) => {
+interface DataPoint {
+  date: string;
+  revenue: number;
+}
+
+interface AggregatedData {
+  [date: string]: number;
+}
+
+const aggregateData = (data: DataPoint[]): DataPoint[] => {
+  const aggregated = data.reduce((acc: AggregatedData, curr: DataPoint) => {
     if (acc[curr.date]) {
       acc[curr.date] += curr.revenue;
     } else {
@@ -35,10 +44,10 @@ const aggregateData = (data: any) => {
 };
 
 export function Chart({ data }: iAppProps) {
-  const proccesedData = aggregateData(data);
+  const processedData = aggregateData(data);
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <LineChart data={proccesedData}>
+      <LineChart data={processedData}>
         <CartesianGrid strokeDasharray={"3 3"} />
         <XAxis dataKey="date" />
         <YAxis dataKey="revenue" />
