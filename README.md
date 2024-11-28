@@ -31,6 +31,3 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 This project is licensed under the [MIT License](./LICENSE).
 
----
-
-Feel free to customize this further to better fit your project's specific details and requirements!
